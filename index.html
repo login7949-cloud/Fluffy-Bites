@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Fluffy Bites</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+  <!-- =========================
+       HOME
+  ========================== -->
+
+  <section id="homePage" class="page active">
+
+    <header class="header">
+
+      <div class="brand">
+
+        <div class="logo">
+          🥞
+        </div>
+
+        <div>
+
+          <h2>FluffyBites</h2>
+
+          <p>
+            Fluffy pancakes, happy moments!
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="header-btn"
+        onclick="openTable()"
+      >
+        🍽️
+      </button>
+
+    </header>
+
+
+    <div class="search-container">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search pancakes..."
+        oninput="searchProducts()"
+      >
+
+      <button
+        onclick="showMessage('Use the category buttons to filter')"
+      >
+        ☷
+      </button>
+
+    </div>
+
+
+    <div class="categories">
+
+      <button
+        class="category active"
+        onclick="filterCategory('All', this)"
+      >
+        All
+      </button>
+
+      <button
+        class="category"
+        onclick="filterCategory('Classic', this)"
+      >
+        Classic
+      </button>
+
+      <button
+        class="category"
+        onclick="filterCategory('Berry', this)"
+      >
+        Berry
+      </button>
+
+      <button
+        class="category"
+        onclick="filterCategory('Chocolate', this)"
+      >
+        Chocolate
+      </button>
+
+      <button
+        class="category"
+        onclick="filterCategory('Special', this)"
+      >
+        Special
+      </button>
+
+    </div>
+
+
+    <div class="section-title">
+
+      <h2>
+        Popular Pancakes
+      </h2>
+
+      <span id="productCount">
+        6 items
+      </span>
+
+    </div>
+
+
+    <div
+      id="productGrid"
+      class="product-grid"
+    ></div>
+
+  </section>
+
+
+
+  <!-- =========================
+       PRODUCT DETAIL
+  ========================== -->
+
+  <section
+    id="detailPage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="goHome()">
+        ←
+      </button>
+
+      <h2>
+        Product Detail
+      </h2>
+
+    </div>
+
+
+    <div class="detail-container">
+
+      <img
+        id="detailImage"
+        class="detail-image"
+        src=""
+      >
+
+
+      <div class="detail-title-row">
+
+        <div>
+
+          <h1 id="detailName"></h1>
+
+          <div
+            id="detailRating"
+            class="detail-rating"
+          ></div>
+
+        </div>
+
+
+        <button
+          id="detailFavorite"
+          class="favorite-detail"
+          onclick="toggleDetailFavorite()"
+        >
+          ♡
+        </button>
+
+      </div>
+
+
+      <p id="detailDescription"></p>
+
+
+      <div class="quantity-row">
+
+        <strong>
+          Quantity
+        </strong>
+
+
+        <div class="quantity">
+
+          <button
+            onclick="changeQuantity(-1)"
+          >
+            −
+          </button>
+
+          <span id="quantity">
+            1
+          </span>
+
+          <button
+            onclick="changeQuantity(1)"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-actions">
+
+        <div
+          id="detailPrice"
+          class="price-box"
+        >
+          Rp0
+        </div>
+
+
+        <button
+          class="order-btn"
+          onclick="addToCart()"
+        >
+          ORDER NOW
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       TABLE
+  ========================== -->
+
+  <section
+    id="tablePage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="goHome()">
+        ←
+      </button>
+
+      <h2>
+        My Table
+      </h2>
+
+    </div>
+
+
+    <div class="table-container">
+
+      <div class="table-icon">
+        🍽️
+      </div>
+
+
+      <h1>
+        Table Number
+      </h1>
+
+
+      <p>
+        Enter your table number for
+        dine-in orders.
+      </p>
+
+
+      <label>
+        Table Number
+      </label>
+
+
+      <input
+        id="tableNumber"
+        class="table-input"
+        type="number"
+        placeholder="Example: 12"
+      >
+
+
+      <button
+        class="checkout-btn"
+        onclick="saveTableNumber()"
+      >
+        SAVE TABLE NUMBER
+      </button>
+
+
+      <div
+        id="currentTable"
+        class="current-table"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       CART
+  ========================== -->
+
+  <section
+    id="cartPage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="goHome()">
+        ←
+      </button>
+
+      <h2>
+        Your Cart
+      </h2>
+
+    </div>
+
+
+    <div id="cartItems"></div>
+
+
+    <div class="summary">
+
+      <div>
+
+        <span>
+          Subtotal
+        </span>
+
+        <strong id="subtotal">
+          Rp0
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Order Type
+        </span>
+
+        <strong id="cartOrderType">
+          Not selected
+        </strong>
+
+      </div>
+
+
+      <hr>
+
+
+      <div class="total">
+
+        <span>
+          Total
+        </span>
+
+        <strong id="total">
+          Rp0
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="checkout-container">
+
+      <button
+        class="checkout-btn"
+        onclick="openCheckout()"
+      >
+        CHECKOUT
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       CHAT
+  ========================== -->
+
+  <section
+    id="messagePage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="goHome()">
+        ←
+      </button>
+
+      <div class="chat-header">
+
+        <div class="worker-avatar">
+          👩🏻‍🍳
+        </div>
+
+        <div>
+
+          <h2>
+            Fluffy Bites Staff
+          </h2>
+
+          <span>
+            ● Online
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="chatMessages"
+      class="chat-messages"
+    >
+
+      <div class="message worker">
+
+        <div class="message-bubble">
+
+          Hello! 👋
+          <br>
+          How can we help you?
+
+        </div>
+
+        <small>
+          Staff · Now
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="chat-input">
+
+      <input
+        id="chatInput"
+        type="text"
+        placeholder="Type a message..."
+        onkeydown="handleChatKey(event)"
+      >
+
+
+      <button
+        onclick="sendMessage()"
+      >
+        ➤
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       FAVORITES
+  ========================== -->
+
+  <section
+    id="favoritePage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="goHome()">
+        ←
+      </button>
+
+      <h2>
+        My Favorites
+      </h2>
+
+    </div>
+
+
+    <div
+      id="favoriteProducts"
+      class="product-grid favorite-grid"
+    ></div>
+
+  </section>
+
+
+
+  <!-- =========================
+       CHECKOUT
+  ========================== -->
+
+  <section
+    id="checkoutPage"
+    class="page"
+  >
+
+    <div class="top-bar">
+
+      <button onclick="openCart()">
+        ←
+      </button>
+
+      <h2>
+        Checkout
+      </h2>
+
+    </div>
+
+
+    <div class="form">
+
+
+      <!-- NAME -->
+
+      <label>
+        Full Name
+      </label>
+
+      <input
+        id="customerName"
+        type="text"
+        placeholder="Your name"
+      >
+
+
+      <!-- ORDER TYPE -->
+
+      <label>
+        Order Type
+      </label>
+
+
+      <div class="order-type-options">
+
+
+        <label
+          class="order-type selected"
+          id="dineInOption"
+        >
+
+          <input
+            type="radio"
+            name="orderType"
+            value="Dine-in"
+            checked
+            onchange="selectOrderType('Dine-in')"
+          >
+
+          <div class="order-type-icon">
+            🍽️
+          </div>
+
+          <div>
+
+            <strong>
+              Dine-in
+            </strong>
+
+            <small>
+              Eat at the restaurant
+            </small>
+
+          </div>
+
+        </label>
+
+
+
+        <label
+          class="order-type"
+          id="takeawayOption"
+        >
+
+          <input
+            type="radio"
+            name="orderType"
+            value="Takeaway"
+            onchange="selectOrderType('Takeaway')"
+          >
+
+          <div class="order-type-icon">
+            🛍️
+          </div>
+
+          <div>
+
+            <strong>
+              Takeaway
+            </strong>
+
+            <small>
+              Take your order home
+            </small>
+
+          </div>
+
+        </label>
+
+
+      </div>
+
+
+
+      <!-- TABLE NUMBER -->
+
+      <div id="tableCheckoutSection">
+
+        <label>
+          Table Number
+        </label>
+
+        <input
+          id="checkoutTable"
+          type="text"
+          placeholder="Your table number"
+          readonly
+        >
+
+      </div>
+
+
+
+      <!-- PAYMENT -->
+
+      <label>
+        Payment Method
+      </label>
+
+
+      <div class="payment-options">
+
+
+        <label class="payment selected">
+
+          <input
+            type="radio"
+            name="payment"
+            value="BCA"
+            checked
+          >
+
+          <div>
+
+            <strong>
+              BCA
+            </strong>
+
+            <small>
+              Bank transfer
+            </small>
+
+          </div>
+
+        </label>
+
+
+
+        <label class="payment">
+
+          <input
+            type="radio"
+            name="payment"
+            value="Cash"
+          >
+
+          <div>
+
+            <strong>
+              Cash
+            </strong>
+
+            <small>
+              Pay at cashier
+            </small>
+
+          </div>
+
+        </label>
+
+
+      </div>
+
+
+
+      <!-- TOTAL -->
+
+      <div class="checkout-total">
+
+        <span>
+          Total
+        </span>
+
+        <strong id="checkoutTotal">
+          Rp0
+        </strong>
+
+      </div>
+
+
+      <button
+        class="checkout-btn"
+        onclick="placeOrder()"
+      >
+        PLACE ORDER
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       SUCCESS
+  ========================== -->
+
+  <section
+    id="successPage"
+    class="page success-page"
+  >
+
+    <div class="success-content">
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <h1>
+        ORDER SUCCESS!
+      </h1>
+
+      <p id="successMessage">
+
+        Your order has been successfully placed.
+
+        <br>
+
+        Thank you for ordering from Fluffy Bites.
+
+      </p>
+
+
+      <div class="order-number">
+        Order #FB001
+      </div>
+
+
+      <button
+        class="checkout-btn"
+        onclick="goHome()"
+      >
+        BACK TO MENU
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       BOTTOM NAVIGATION
+  ========================== -->
+
+  <nav class="bottom-nav">
+
+
+    <button
+      id="navHome"
+      class="nav-item active"
+      onclick="goHome()"
+    >
+
+      <span>
+        🏠
+      </span>
+
+      <small>
+        Home
+      </small>
+
+    </button>
+
+
+
+    <button
+      id="navTable"
+      class="nav-item"
+      onclick="openTable()"
+    >
+
+      <span>
+        🍽️
+      </span>
+
+      <small>
+        Table
+      </small>
+
+    </button>
+
+
+
+    <button
+      id="navCart"
+      class="nav-item cart-nav"
+      onclick="openCart()"
+    >
+
+      <div class="cart-circle">
+
+        🛒
+
+        <span id="cartBadge">
+          0
+        </span>
+
+      </div>
+
+      <small>
+        Cart
+      </small>
+
+    </button>
+
+
+
+    <button
+      id="navMessage"
+      class="nav-item"
+      onclick="openMessages()"
+    >
+
+      <span>
+        💬
+      </span>
+
+      <small>
+        Message
+      </small>
+
+      <span
+        id="messageBadge"
+        class="message-badge"
+      >
+        1
+      </span>
+
+    </button>
+
+
+
+    <button
+      id="navFavorite"
+      class="nav-item"
+      onclick="openFavorites()"
+    >
+
+      <span>
+        ♡
+      </span>
+
+      <small>
+        Favorite
+      </small>
+
+    </button>
+
+
+  </nav>
+
+
+  <div id="toast"></div>
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
